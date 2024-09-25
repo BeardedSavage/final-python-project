@@ -11,21 +11,17 @@ def emotion_app():
         transfer it's output using the emotion_detector function.
     '''
     # Retrieve the text to analyse
-    text_to_analyse = request.args.get('textToAnalyze')
+    text_to_analyze = request.args.get('textToAnalyze')
 
     # Pass the text to the emotion_detector
-    response = emotion_detector(text_to_analyse)
-
-    # Extract the type of emotions and it's rating
-    anger = response['anger']
-    disgust = response['disgust']
-    fear = response['fear']
-    joy = response['joy']
-    sadness = response['sadness']
-    dominant = response['dominant_emotion']
+    dominant_emotion = emotion_detector(text_to_analyze)
     
+    # If the input is blank return a status code of 400
+    if dominant_emotion is None:
+        return "Input is invalid! Try again."
     # Return the formatted output of the application
-    return f"For the given statement, the system response is 'anger': {anger} 'disgust': {disgust} 'fear': {fear} 'joy': {joy} 'sadness': {sadness} 'dominant emotion': {dominant}."
+    else:
+        return f"For the given statement, the system response is {dominant_emotion}."
 
 # Route for the HTML page
 @app.route("/")
